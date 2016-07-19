@@ -1,13 +1,11 @@
 {
   "name": "MSOS-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Greatest desktop application since forever",
   "main": "main.js",
   "dependencies": {
-    "pretty-bytes": "^2.0.1"
-  },
-  "scripts": {
-    "start": "electron main.js"
+    "electron-squirrel-startup": "^1.0.0",
+    "winston": "^2.2.0"
   },
   "author": "Me and my Team <no-reply@marleyspoon.com>",
   "license": "ISC"
