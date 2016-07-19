@@ -1,47 +1,55 @@
 {
   "name": "MSOS-app",
-  "version": "1.0.0",
-  "description": "greatest desktop application since forever",
+  "version": "0.0.2",
+  "description": "Greatest desktop application since forever",
   "main": "main.js",
   "dependencies": {
     "pretty-bytes": "^2.0.1"
   },
   "devDependencies": {
     "electron-builder": "^5.12.1",
-    "electron-prebuilt": "^0.35.2"
+    "electron-prebuilt": "^0.35.2",
+    "mkdirp": "~0.5.1"
   },
   "build": {
-    "app-bundle-id": "msos.electron",
+    "appId": "msos.electron",
     "app-category-type": "public.app-category.productivity",
-    "iconUrl": "http://eatodo.s3.amazonaws.com/icon.ico",
-    "mac": {
+    "dmg": {
+      "title": "MS OS App",
+      "background": "build/background.png",
+      "icon": "build/icon.icns",
+      "icon-size": 128,
       "contents": [
         {
-          "x": 410,
-          "y": 150,
+          "x": 355,
+          "y": 125,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 130,
-          "y": 150,
+          "x": 155,
+          "y": 125,
           "type": "file"
         }
       ]
     },
     "win": {
-      "remoteReleases": "https://github.com/raluka/msos"
+      "remoteReleases": "https://github.com/raluka/msos",
+      "iconUrl": "http://eatodo.s3.amazonaws.com/icon.ico"
     }
   },
-  "author": "Me and my Team",
-  "license": "ISC",
+  "author": "Me and my Team <no-reply@marleyspoon.com>",
   "scripts": {
     "postinstall": "install-app-deps",
     "start": "electron ./app --enable-logging",
     "dev": "NODE_ENV='development' npm run start",
-    "dist": "npm run dist:osx && npm run dist:win32 && npm run dist:win64",
-    "dist:osx": "build --platform darwin",
-    "dist:win32": "build --platform win32 --arch ia32",
-    "dist:win64": "build --platform win32 --arch x64"
+    "dist": "build -mwl --x64 --ia32",
+    "prerelease:osx": "rimraf release/osx && mkdirp release/osx",
+    "release:osx": "copyfiles -f dist/mac/*.{dmg,zip} release/osx && PACKAGE_VERSION=$(cat app/package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && echo $PACKAGE_VERSION >> ./release/osx/VERSION",
+    "prerelease:win32": "rimraf release/win32 && mkdirp release/win32",
+    "release:win32": "copyfiles -f dist/win-ia32/{RELEASES,*.nupkg,*.exe} release/win32",
+    "prerelease:win64": "rimraf release/win64 && mkdirp release/win64",
+    "release:win64": "copyfiles -f dist/win/{RELEASES,*.nupkg,*.exe} release/win64",
+    "release": "run-p release:*"
   }
 }
