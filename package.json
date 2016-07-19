@@ -1,0 +1,17 @@
+{
+  "name": "MSOS-app",
+  "version": "1.0.0",
+  "description": "greatest desktop application since forever",
+  "main": "main.js",
+  "dependencies": {
+    "pretty-bytes": "^2.0.1"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^0.35.2"
+  },
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "author": "Me and my Team",
+  "license": "ISC"
+}
